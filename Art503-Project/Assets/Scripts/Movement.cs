@@ -31,7 +31,7 @@ public class Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-      Vector3 targetVelocity = new Vector2(moveHorizontal * 10f, rb.velocity.y);
+      Vector3 targetVelocity = new Vector2(moveHorizontal * movementSpeed, rb.velocity.y);
       rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
       // if(isJumping == false && moveHorizontal > 0.1f || moveHorizontal < -0.1f){
       //   rb.AddForce(new Vector2(moveHorizontal * movementSpeed, 0f), ForceMode2D.Impulse);
@@ -60,24 +60,5 @@ public class Movement : MonoBehaviour
       }
     }
 
-    /*
-      public float movementSpeed = 5f;
-  public float jumpHeight = 15f;
-  Rigidbody2D rb;
 
-  private void Awake()
-  {
-    rb = GetComponent<Rigidbody2D>();
-  }
-
-  private void Update()
-  {
-    float xMov = Input.GetAxisRaw("Horizontal");
-    bool jump = Input.GetKeyDown(KeyCode.Space);
-    if(jump){
-      rb.AddForce(new Vector2(0, jumpHeight), ForceMode2D.Impulse);
-    }
-    rb.velocity = new Vector2(xMov, 0).normalized * movementSpeed;
-  }
-    */
 }
