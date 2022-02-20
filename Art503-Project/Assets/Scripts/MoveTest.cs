@@ -11,7 +11,6 @@ public class MoveTest : MonoBehaviour
   public bool isJumping;
   private float moveHorizontal;
   private float moveVertical;
-  private int heroNumber = 1;
   private Rigidbody2D rb;
     // Start is called before the first frame update
   private void Start()
@@ -27,13 +26,9 @@ public class MoveTest : MonoBehaviour
       moveHorizontal = Input.GetAxisRaw("Horizontal");
       moveVertical = Input.GetAxisRaw("Vertical");
       if(Input.GetKeyDown("1") || Input.GetKeyUp("1")){
-          heroNumber = 1;
       } else if (Input.GetKeyDown("2") || Input.GetKeyUp("2")){
-          heroNumber = 2;
       } else if (Input.GetKeyDown("3") || Input.GetKeyUp("3")){
-          heroNumber = 3;
       } else if (Input.GetKeyDown("4") || Input.GetKeyUp("4")){
-          heroNumber = 4;
       }
       
     }

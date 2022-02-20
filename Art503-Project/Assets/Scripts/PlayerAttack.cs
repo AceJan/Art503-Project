@@ -6,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
 {
     private bool attacking = false;
     private float attackTimer = 0f;
-    private float attackCooldown = 0.3f;
+    private float attackCooldown = 1.0f;
     public Collider2D attackTrigger;
 
     void Awake()
@@ -28,7 +28,7 @@ public class PlayerAttack : MonoBehaviour
             attackTimer = attackCooldown;
             attackTrigger.enabled = true;
         }
-
+        //cooldown timer
         if(attacking){
             if(attackTimer > 0){
                 attackTimer -= Time.deltaTime;

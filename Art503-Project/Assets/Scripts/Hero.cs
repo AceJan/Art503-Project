@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class Hero : Character
 {
+    [SerializeField] Transform groundCheckCollider;
+    [SerializeField] LayerMask groundLayer;
+
+    [SerializeField] float groundCheckRadius = 0.2f;
+    [SerializeField] bool isGrounded = false;
     // changes character speed/jump
-    public Details archer = new Details(10, 100, 1);
+    public Details archer = new Details(10, 80, 1);
     public Details rogue = new Details(10, 80, 2);
     public Details tank = new Details(5, 40, 1);
     public Details magician = new Details(7, 60, 1);
 
     private Rigidbody2D rb;
-    private bool isJumping = false;
     private float moveHorizontal;
-    private float moveVertical;
     private Vector3 m_Velocity = Vector3.zero;
 
     //[SerializedField] just means that that variable will appear in the inspector column (normally on the right side)
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
     private int heroNumber = 1;
-    private int currentJumpCount = 1;
+    private int currentJumpCount;
     private void Start()
     {
         //gets the rigid body 2D of whatever this code is applied to
@@ -30,7 +33,6 @@ public class Hero : Character
     void Update()
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal"); //use left/right arrow keys to move
-        moveVertical = Input.GetAxisRaw("Vertical"); //use up arrow key to jump
 
         // press 1, 2, 3, or 4 to change speed
         if(Input.GetKeyDown("1") || Input.GetKeyUp("1")){
@@ -46,6 +48,37 @@ public class Hero : Character
             heroNumber = 4;
             Debug.Log(heroNumber);
         }
+
+        if(isGrounded == true && rb.velocity.y == 0){
+            if(heroNumber == 1){
+                currentJumpCount = archer.jumpCounter;
+            } else if(heroNumber == 2){
+                currentJumpCount = rogue.jumpCounter;
+            } else if(heroNumber == 3){
+                currentJumpCount = tank.jumpCounter;
+            } else if(heroNumber == 4){
+                currentJumpCount = magician.jumpCounter;
+            }
+        }
+        //pressing up arrow key
+        if(Input.GetKeyDown(KeyCode.UpArrow) && currentJumpCount > 0){
+            Debug.Log(currentJumpCount);
+            if(heroNumber == 1){
+                rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
+                currentJumpCount --;
+            } else if(heroNumber == 2){
+                rb.AddForce(new Vector2(0f, rogue.jumpHt), ForceMode2D.Impulse);
+                currentJumpCount --;
+            } else if(heroNumber == 3){
+                rb.AddForce(new Vector2(0f, tank.jumpHt), ForceMode2D.Impulse);
+                currentJumpCount --;
+            } else if(heroNumber == 4){
+                rb.AddForce(new Vector2(0f, magician.jumpHt), ForceMode2D.Impulse);
+                currentJumpCount --;
+            }
+            
+        }
+        
     }
     
     void FixedUpdate()
@@ -54,7 +87,6 @@ public class Hero : Character
         if(heroNumber == 1){
             Vector3 targetVelocity = new Vector2(moveHorizontal * archer.moveSp, rb.velocity.y);
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
-            
         } else if (heroNumber == 2){
             Vector3 targetVelocity = new Vector2(moveHorizontal * rogue.moveSp, rb.velocity.y);
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
@@ -65,41 +97,33 @@ public class Hero : Character
             Vector3 targetVelocity = new Vector2(moveHorizontal * magician.moveSp, rb.velocity.y);
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
         }
+        CheckGroundLayer();
 
-        //only true when on ground and pressing up arrow key
-        if(!isJumping && moveVertical > 0.1f){
-            if(heroNumber == 1){
-                rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
-            } else if(heroNumber == 2){
-                rb.AddForce(new Vector2(0f, rogue.jumpHt), ForceMode2D.Impulse);
-            } else if(heroNumber == 3){
-                rb.AddForce(new Vector2(0f, tank.jumpHt), ForceMode2D.Impulse);
-            } else if(heroNumber == 4){
-                rb.AddForce(new Vector2(0f, magician.jumpHt), ForceMode2D.Impulse);
-            }
-        }
 
-        
     }
 
-    //currently on the ground
-    void OnTriggerEnter2D(Collider2D collision)
+    void CheckGroundLayer()
     {
-        if(collision.gameObject.tag == "Ground"){
-            //resets jump counter
-            if(heroNumber == 1) currentJumpCount = archer.jumpCounter;
-            else if(heroNumber == 2) currentJumpCount = rogue.jumpCounter;
-            else if(heroNumber == 3) currentJumpCount = tank.jumpCounter;
-            else if(heroNumber == 4) currentJumpCount = rogue.jumpCounter;
-            isJumping = false;
-        }
+        isGrounded = Physics2D.OverlapCircle(groundCheckCollider.position, groundCheckRadius, groundLayer);
     }
+    // //currently on the ground
+    // void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     if(collision.gameObject.tag == "Ground"){
+    //         //resets jump counter
+    //         if(heroNumber == 1) currentJumpCount = archer.jumpCounter;
+    //         else if(heroNumber == 2) currentJumpCount = rogue.jumpCounter;
+    //         else if(heroNumber == 3) currentJumpCount = tank.jumpCounter;
+    //         else if(heroNumber == 4) currentJumpCount = rogue.jumpCounter;
+    //         isJumping = false;
+    //     }
+    // }
 
-    //currently jumping
-    void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Ground"){
-            isJumping = true;
-        }
-    }
+    // //currently jumping
+    // void OnTriggerExit2D(Collider2D collision)
+    // {
+    //     if(collision.gameObject.tag == "Ground"){
+    //         isJumping = true;
+    //     }
+    // }
 }
