@@ -133,9 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 442774633}
   - component: {fileID: 442774632}
+  - component: {fileID: 442774630}
   - component: {fileID: 442774631}
   - component: {fileID: 442774635}
-  - component: {fileID: 442774630}
   - component: {fileID: 442774634}
   m_Layer: 0
   m_Name: Square (1)
@@ -163,7 +163,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &442774631
 BoxCollider2D:
@@ -265,12 +265,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 442774629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e22bd2706a0d36448a1b689a12eda5cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 67f1e5597ee15374c85f2e6002a97592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_MovementSmoothing: 0.05
   movementSpeed: 10
-  jumpHeight: 30
+  jumpHeight: 80
   isJumping: 0
 --- !u!61 &442774635
 BoxCollider2D:
@@ -285,7 +285,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.57}
+  m_Offset: {x: 0, y: -0.53}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -296,7 +296,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.2}
+  m_Size: {x: 1, y: 0.09}
   m_EdgeRadius: 0
 --- !u!1 &519420028
 GameObject:
