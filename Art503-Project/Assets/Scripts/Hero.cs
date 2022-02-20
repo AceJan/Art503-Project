@@ -18,8 +18,10 @@ public class Hero : Character
     private Rigidbody2D rb;
     private float moveHorizontal;
     private Vector3 m_Velocity = Vector3.zero;
+    private bool facingRight = true;
 
     //[SerializedField] just means that that variable will appear in the inspector column (normally on the right side)
+    //[Range(0, .3f)] is a slider ranging from 0 to .3f
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
     private int heroNumber = 1;
     private int currentJumpCount;
@@ -34,6 +36,8 @@ public class Hero : Character
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal"); //use left/right arrow keys to move
 
+        if(facingRight == false && moveHorizontal > 0) Flip();
+        else if (facingRight == true && moveHorizontal < 0) Flip();
         // press 1, 2, 3, or 4 to change speed
         if(Input.GetKeyDown("1") || Input.GetKeyUp("1")){
             heroNumber = 1;
@@ -98,32 +102,17 @@ public class Hero : Character
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
         }
         CheckGroundLayer();
-
-
     }
 
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector2 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
+    }
     void CheckGroundLayer()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheckCollider.position, groundCheckRadius, groundLayer);
     }
-    // //currently on the ground
-    // void OnTriggerEnter2D(Collider2D collision)
-    // {
-    //     if(collision.gameObject.tag == "Ground"){
-    //         //resets jump counter
-    //         if(heroNumber == 1) currentJumpCount = archer.jumpCounter;
-    //         else if(heroNumber == 2) currentJumpCount = rogue.jumpCounter;
-    //         else if(heroNumber == 3) currentJumpCount = tank.jumpCounter;
-    //         else if(heroNumber == 4) currentJumpCount = rogue.jumpCounter;
-    //         isJumping = false;
-    //     }
-    // }
-
-    // //currently jumping
-    // void OnTriggerExit2D(Collider2D collision)
-    // {
-    //     if(collision.gameObject.tag == "Ground"){
-    //         isJumping = true;
-    //     }
-    // }
 }
