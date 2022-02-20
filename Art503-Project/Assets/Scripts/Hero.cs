@@ -5,7 +5,7 @@ using UnityEngine;
 public class Hero : Character
 {
     // changes character speed/jump
-    public Details archer = new Details(10, 80, 1);
+    public Details archer = new Details(10, 100, 1);
     public Details rogue = new Details(10, 80, 2);
     public Details tank = new Details(5, 40, 1);
     public Details magician = new Details(7, 60, 1);
@@ -45,14 +45,6 @@ public class Hero : Character
         } else if (Input.GetKeyDown("4") || Input.GetKeyUp("4")){
             heroNumber = 4;
             Debug.Log(heroNumber);
-        }
-
-        // Placeholder for attack animations
-        if(Input.GetKeyDown("z")){
-            Debug.Log("primary attack");
-        }
-        if(Input.GetKeyDown("x")){
-            Debug.Log("ultimate attack");
         }
     }
     
