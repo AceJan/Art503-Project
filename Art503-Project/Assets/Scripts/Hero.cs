@@ -71,7 +71,12 @@ public class Hero : Character
                 rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
                 currentJumpCount --;
             } else if(heroNumber == 2){
-                rb.AddForce(new Vector2(0f, rogue.jumpHt), ForceMode2D.Impulse);
+                if(currentJumpCount == 2){
+                    rb.AddForce(new Vector2(0f, rogue.jumpHt), ForceMode2D.Impulse);    
+                } else if (currentJumpCount == 1){
+                    rb.AddForce(new Vector2(0f, rogue.jumpHt), ForceMode2D.Impulse);    
+                }
+                
                 currentJumpCount --;
             } else if(heroNumber == 3){
                 rb.AddForce(new Vector2(0f, tank.jumpHt), ForceMode2D.Impulse);
@@ -111,6 +116,7 @@ public class Hero : Character
         scaler.x *= -1;
         transform.localScale = scaler;
     }
+    //checks if the player is touching Ground layer
     void CheckGroundLayer()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheckCollider.position, groundCheckRadius, groundLayer);
