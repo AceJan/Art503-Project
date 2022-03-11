@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : Character
-{
+{ 
     [SerializeField] Transform groundCheckCollider;
     [SerializeField] LayerMask groundLayer;
 
     [SerializeField] float groundCheckRadius = 0.2f;
     [SerializeField] bool isGrounded = false;
+    public SpriteRenderer spriteRenderer; //pick which object you want to change
+
+    //player sprites
+    public Sprite archerSprite;
+    public Sprite rogueSprite;
+    public Sprite tankSprite;
+    public Sprite magicianSprite;
+    
+
     // changes character speed/jump
     public Details archer = new Details(10, 80, 1);
     public Details rogue = new Details(10, 80, 2);
@@ -25,11 +34,14 @@ public class Hero : Character
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
     private int heroNumber = 1;
     private int currentJumpCount;
+
+
+
     private void Start()
     {
         //gets the rigid body 2D of whatever this code is applied to
         rb = GetComponent<Rigidbody2D>();
-        
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -41,15 +53,19 @@ public class Hero : Character
         // press 1, 2, 3, or 4 to change speed
         if(Input.GetKeyDown("1") || Input.GetKeyUp("1")){
             heroNumber = 1;
+            spriteRenderer.sprite = archerSprite;
             Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("2") || Input.GetKeyUp("2")){
             heroNumber = 2;
+            spriteRenderer.sprite = rogueSprite;
             Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("3") || Input.GetKeyUp("3")){
             heroNumber = 3;
+            spriteRenderer.sprite = tankSprite;
             Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("4") || Input.GetKeyUp("4")){
             heroNumber = 4;
+            spriteRenderer.sprite = magicianSprite;
             Debug.Log(heroNumber);
         }
 

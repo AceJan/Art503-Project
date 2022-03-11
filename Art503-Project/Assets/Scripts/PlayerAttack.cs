@@ -8,8 +8,9 @@ public class PlayerAttack : MonoBehaviour
     private float attackTimer = 0f;
     private float attackCooldown = .01f;
     public Collider2D attackTrigger;
+    
 
-    void Awake()
+    void Start()
     {
         attackTrigger.enabled = false;
     }
