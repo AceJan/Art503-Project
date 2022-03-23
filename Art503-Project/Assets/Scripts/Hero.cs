@@ -6,9 +6,16 @@ public class Hero : Character
 { 
     [SerializeField] Transform groundCheckCollider;
     [SerializeField] LayerMask groundLayer;
-
     [SerializeField] float groundCheckRadius = 0.2f;
+    [SerializeField] Transform wallCheckCollider;
+    [SerializeField] LayerMask wallLayer;
+    [SerializeField] float wallCheckRadius = .2f;
+    [SerializeField] Transform enemyCheckCollider;
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] float enemyCheckRadius = .5f;
     [SerializeField] bool isGrounded = false;
+    [SerializeField] bool isWall = false;
+    [SerializeField] bool isEnemy = false;
     public SpriteRenderer spriteRenderer; //pick which object you want to change
 
     //player sprites
@@ -16,13 +23,12 @@ public class Hero : Character
     public Sprite rogueSprite;
     public Sprite tankSprite;
     public Sprite magicianSprite;
-    
 
     // changes character speed/jump
-    public Details archer = new Details(10, 80, 1);
-    public Details rogue = new Details(10, 80, 2);
-    public Details tank = new Details(5, 40, 1);
-    public Details magician = new Details(7, 60, 1);
+    public Details archer = new Details(7, 100, 1);
+    public Details rogue = new Details(7, 60, 2);
+    public Details tank = new Details(5, 80, 1);
+    public Details magician = new Details(7, 80, 1);
 
     private Rigidbody2D rb;
     private float moveHorizontal;
@@ -42,6 +48,7 @@ public class Hero : Character
         //gets the rigid body 2D of whatever this code is applied to
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        rb.sharedMaterial.friction = 0f;
     }
 
     void Update()
@@ -50,25 +57,32 @@ public class Hero : Character
 
         if(facingRight == false && moveHorizontal > 0) Flip();
         else if (facingRight == true && moveHorizontal < 0) Flip();
-        // press 1, 2, 3, or 4 to change speed
-        if(Input.GetKeyDown("1") || Input.GetKeyUp("1")){
+        // press 1, 2, 3, or 4 to change characters
+        if(isGrounded){
+            if(Input.GetKeyDown("1") || Input.GetKeyUp("1")){
             heroNumber = 1;
             spriteRenderer.sprite = archerSprite;
+            rb.sharedMaterial.friction = 1f;
             Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("2") || Input.GetKeyUp("2")){
             heroNumber = 2;
             spriteRenderer.sprite = rogueSprite;
+            rb.sharedMaterial.friction = 0f;
             Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("3") || Input.GetKeyUp("3")){
             heroNumber = 3;
             spriteRenderer.sprite = tankSprite;
+            rb.sharedMaterial.friction = 0f;
             Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("4") || Input.GetKeyUp("4")){
             heroNumber = 4;
             spriteRenderer.sprite = magicianSprite;
+            rb.sharedMaterial.friction = 0f;
             Debug.Log(heroNumber);
         }
 
+
+        }
         if(isGrounded == true && rb.velocity.y == 0){
             if(heroNumber == 1){
                 currentJumpCount = archer.jumpCounter;
@@ -81,7 +95,7 @@ public class Hero : Character
             }
         }
         //pressing up arrow key
-        if(Input.GetKeyDown(KeyCode.UpArrow) && currentJumpCount > 0){
+        if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0){
             Debug.Log(currentJumpCount);
             if(heroNumber == 1){
                 rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
@@ -92,7 +106,6 @@ public class Hero : Character
                 } else if (currentJumpCount == 1){
                     rb.AddForce(new Vector2(0f, rogue.jumpHt), ForceMode2D.Impulse);    
                 }
-                
                 currentJumpCount --;
             } else if(heroNumber == 3){
                 rb.AddForce(new Vector2(0f, tank.jumpHt), ForceMode2D.Impulse);
@@ -100,12 +113,10 @@ public class Hero : Character
             } else if(heroNumber == 4){
                 rb.AddForce(new Vector2(0f, magician.jumpHt), ForceMode2D.Impulse);
                 currentJumpCount --;
-            }
-            
-        }
-        
+            }   
+        }        
     }
-    
+
     void FixedUpdate()
     {
         //movement for the heroes
@@ -123,6 +134,8 @@ public class Hero : Character
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
         }
         CheckGroundLayer();
+        CheckWallLayer();
+        CheckEnemyLayer();
     }
 
     void Flip()
@@ -136,5 +149,15 @@ public class Hero : Character
     void CheckGroundLayer()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheckCollider.position, groundCheckRadius, groundLayer);
+    }
+
+    void CheckWallLayer()
+    {
+        isWall = Physics2D.OverlapCircle(wallCheckCollider.position, wallCheckRadius, wallLayer);
+    }
+
+    void CheckEnemyLayer()
+    {
+        isEnemy = Physics2D.OverlapCircle(enemyCheckCollider.position, enemyCheckRadius, enemyLayer);
     }
 }
