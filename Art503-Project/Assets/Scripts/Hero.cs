@@ -10,12 +10,8 @@ public class Hero : Character
     [SerializeField] Transform wallCheckCollider;
     [SerializeField] LayerMask wallLayer;
     [SerializeField] float wallCheckRadius = .2f;
-    [SerializeField] Transform enemyCheckCollider;
-    [SerializeField] LayerMask enemyLayer;
-    [SerializeField] float enemyCheckRadius = .5f;
     [SerializeField] bool isGrounded = false;
     [SerializeField] bool isWall = false;
-    [SerializeField] bool isEnemy = false;
     public SpriteRenderer spriteRenderer; //pick which object you want to change
 
     //player sprites
@@ -26,7 +22,7 @@ public class Hero : Character
 
     // changes character speed/jump
     public Details archer = new Details(7, 100, 1);
-    public Details rogue = new Details(7, 60, 2);
+    public Details rogue = new Details(7, 80, 2);
     public Details tank = new Details(5, 80, 1);
     public Details magician = new Details(7, 80, 1);
 
@@ -63,26 +59,23 @@ public class Hero : Character
             heroNumber = 1;
             spriteRenderer.sprite = archerSprite;
             rb.sharedMaterial.friction = 1f;
-            Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("2") || Input.GetKeyUp("2")){
             heroNumber = 2;
             spriteRenderer.sprite = rogueSprite;
             rb.sharedMaterial.friction = 0f;
-            Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("3") || Input.GetKeyUp("3")){
             heroNumber = 3;
             spriteRenderer.sprite = tankSprite;
             rb.sharedMaterial.friction = 0f;
-            Debug.Log(heroNumber);
         } else if (Input.GetKeyDown("4") || Input.GetKeyUp("4")){
             heroNumber = 4;
             spriteRenderer.sprite = magicianSprite;
             rb.sharedMaterial.friction = 0f;
-            Debug.Log(heroNumber);
         }
 
 
         }
+        //on the ground and not in the air
         if(isGrounded == true && rb.velocity.y == 0){
             if(heroNumber == 1){
                 currentJumpCount = archer.jumpCounter;
@@ -96,7 +89,7 @@ public class Hero : Character
         }
         //pressing up arrow key
         if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0){
-            Debug.Log(currentJumpCount);
+            //Debug.Log(currentJumpCount);
             if(heroNumber == 1){
                 rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
                 currentJumpCount --;
@@ -114,7 +107,7 @@ public class Hero : Character
                 rb.AddForce(new Vector2(0f, magician.jumpHt), ForceMode2D.Impulse);
                 currentJumpCount --;
             }   
-        }        
+        }
     }
 
     void FixedUpdate()
@@ -135,7 +128,6 @@ public class Hero : Character
         }
         CheckGroundLayer();
         CheckWallLayer();
-        CheckEnemyLayer();
     }
 
     void Flip()
@@ -156,8 +148,4 @@ public class Hero : Character
         isWall = Physics2D.OverlapCircle(wallCheckCollider.position, wallCheckRadius, wallLayer);
     }
 
-    void CheckEnemyLayer()
-    {
-        isEnemy = Physics2D.OverlapCircle(enemyCheckCollider.position, enemyCheckRadius, enemyLayer);
-    }
 }

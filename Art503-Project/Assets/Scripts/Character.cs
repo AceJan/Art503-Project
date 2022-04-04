@@ -22,11 +22,10 @@ public class Character : MonoBehaviour
 
         // this will load player sprite and their own attack animation
         // not implemented yet
-        public Details(int ms, int jh, int jc, SpriteRenderer playerS, Animation attackP){
+        public Details(int ms, int jh, int jc, Animation attackP){
             moveSp = ms;
             jumpHt = jh;
             jumpCounter = jc;
-            playerSprite = playerS;
             attackPattern = attackP;
         }
     }
