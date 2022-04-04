@@ -45,12 +45,10 @@ public class Health : MonoBehaviour
         CheckEnemyLayer();
 
         if(isEnemy){
+            if(timeLeft == 1) TakeDamage(1);
             timeLeft -= Time.deltaTime;
             Debug.Log(timeLeft);
-            if(timeLeft < 0){
-                TakeDamage(1);
-                timeLeft = 1;
-            }
+            if(timeLeft < 0) timeLeft = 1;
             
         }
     }
