@@ -51,6 +51,9 @@ public class Health : MonoBehaviour
             if(timeLeft < 0) timeLeft = 1;
             
         }
+        if(!isEnemy){
+            timeLeft = 1;
+        }
     }
 
     
