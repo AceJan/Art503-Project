@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : Character
-{ 
+{
     [SerializeField] Transform groundCheckCollider;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckRadius = 0.2f;
@@ -51,8 +51,11 @@ public class Hero : Character
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal"); //use left/right arrow keys to move
 
-        if(facingRight == false && moveHorizontal > 0) Flip();
-        else if (facingRight == true && moveHorizontal < 0) Flip();
+        if(!PauseMenu.isPaused){
+            if(facingRight == false && moveHorizontal > 0) Flip();
+            else if (facingRight == true && moveHorizontal < 0) Flip();
+        }
+
         // press 1, 2, 3, or 4 to change characters
         if(isGrounded){
             if(Input.GetKeyDown("1") || Input.GetKeyUp("1")){
