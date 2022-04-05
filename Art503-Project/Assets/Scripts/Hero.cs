@@ -24,7 +24,7 @@ public class Hero : Character
 
     // changes character speed, jump, jumpCount
     public Details archer = new Details(7, 100, 1);
-    public Details rogue = new Details(7, 80, 2);
+    public Details rogue = new Details(7, 75, 2);
     public Details tank = new Details(5, 80, 1);
     public Details magician = new Details(7, 2.77f, 0);
 
@@ -115,13 +115,20 @@ public class Hero : Character
             teleCheckCollider.transform.localPosition = new Vector3(0, magician.jumpHt, 0);
         }  
         //tele left/right
-        else if ( (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || 
-        Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) &&
+        else if ( (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) &&
         currentJumpCount == 0 && heroNumber == 4){
             teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, 0, 0);
-        } else if (heroNumber == 4 && Input.GetKey(KeyCode.Space)){
+        }
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) &&
+        currentJumpCount == 0 && heroNumber == 4){
+            teleCheckCollider.transform.localPosition = new Vector3(-magician.jumpHt, 0, 0);
+        }
+         else if (heroNumber == 4 && Input.GetKey(KeyCode.Space)){
             if(!isTele){
-                if(Input.GetKeyDown(KeyCode.Space)) Debug.Log("Teleport to empty");
+                if(Input.GetKeyDown(KeyCode.Space)) {
+                    rb.transform.position += teleCheckCollider.transform.localPosition;
+                    Debug.Log("Teleport to empty");
+                }
             }
 
         }
@@ -154,6 +161,7 @@ public class Hero : Character
         Vector2 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
+
     }
     //checks if the player is touching Ground layer
     void CheckGroundLayer()
