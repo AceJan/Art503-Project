@@ -52,6 +52,9 @@ public class Health : MonoBehaviour
         if(!isEnemy){
             timeLeft = 1;
         }
+        if(Hero.rb.transform.position.y <= -10){
+            SceneManager.LoadScene(2);
+        }
     }
 
     

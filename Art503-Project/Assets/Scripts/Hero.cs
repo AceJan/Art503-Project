@@ -24,7 +24,7 @@ public class Hero : Character
     public Details tank = new Details(5, 80, 1);
     public Details magician = new Details(7, 80, 1);
 
-    private Rigidbody2D rb;
+    public static Rigidbody2D rb;
     private float moveHorizontal;
     private Vector3 m_Velocity = Vector3.zero;
     private bool facingRight = true;
@@ -42,7 +42,7 @@ public class Hero : Character
         //gets the rigid body 2D of whatever this code is applied to
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        rb.sharedMaterial.friction = 0f;
+        rb.sharedMaterial.friction = 1f;
     }
 
     void Update()
