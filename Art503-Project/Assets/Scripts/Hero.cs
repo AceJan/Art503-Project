@@ -8,8 +8,12 @@ public class Hero : Character
     [SerializeField] Transform wallCheckCollider;
     [SerializeField] LayerMask wallLayer;
     [SerializeField] float wallCheckRadius = .2f;
+    [SerializeField] Transform teleCheckCollider;
+    [SerializeField] LayerMask teleLayer;
+    [SerializeField] float teleCheckRadius = .2f;
     [SerializeField] bool isGrounded = false;
     [SerializeField] bool isWall = false;
+    [SerializeField] bool isTele = false;
     public SpriteRenderer spriteRenderer; //pick which object you want to change
 
     //player sprites
@@ -18,11 +22,11 @@ public class Hero : Character
     public Sprite tankSprite;
     public Sprite magicianSprite;
 
-    // changes character speed/jump
+    // changes character speed, jump, jumpCount
     public Details archer = new Details(7, 100, 1);
     public Details rogue = new Details(7, 80, 2);
     public Details tank = new Details(5, 80, 1);
-    public Details magician = new Details(7, 80, 1);
+    public Details magician = new Details(7, 2.77f, 0);
 
     public static Rigidbody2D rb;
     private float moveHorizontal;
@@ -88,8 +92,8 @@ public class Hero : Character
                 currentJumpCount = magician.jumpCounter;
             }
         }
-        //pressing up arrow key
-        if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0){
+        //Jumping
+        if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0 && heroNumber != 4){
             //Debug.Log(currentJumpCount);
             if(heroNumber == 1){
                 rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
@@ -104,10 +108,22 @@ public class Hero : Character
             } else if(heroNumber == 3){
                 rb.AddForce(new Vector2(0f, tank.jumpHt), ForceMode2D.Impulse);
                 currentJumpCount --;
-            } else if(heroNumber == 4){
-                rb.AddForce(new Vector2(0f, magician.jumpHt), ForceMode2D.Impulse);
-                currentJumpCount --;
-            }   
+            }
+        } 
+        //tele up
+        else if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && currentJumpCount == 0 && heroNumber == 4){
+            teleCheckCollider.transform.localPosition = new Vector3(0, magician.jumpHt, 0);
+        }  
+        //tele left/right
+        else if ( (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || 
+        Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) &&
+        currentJumpCount == 0 && heroNumber == 4){
+            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, 0, 0);
+        } else if (heroNumber == 4 && Input.GetKey(KeyCode.Space)){
+            if(!isTele){
+                if(Input.GetKeyDown(KeyCode.Space)) Debug.Log("Teleport to empty");
+            }
+
         }
     }
 
@@ -129,6 +145,7 @@ public class Hero : Character
         }
         CheckGroundLayer();
         CheckWallLayer();
+        CheckTeleport();
     }
 
     void Flip()
@@ -149,4 +166,7 @@ public class Hero : Character
         isWall = Physics2D.OverlapCircle(wallCheckCollider.position, wallCheckRadius, wallLayer);
     }
 
+    void CheckTeleport(){
+        isTele = Physics2D.OverlapCircle(teleCheckCollider.position, teleCheckRadius, teleLayer);
+    }
 }

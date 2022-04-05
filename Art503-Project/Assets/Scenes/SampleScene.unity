@@ -25960,13 +25960,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442774629}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.42, y: -0.69, z: 0}
+  m_LocalPosition: {x: 94.3, y: -0.69, z: 0}
   m_LocalScale: {x: 0.6491, y: 0.6491, z: 0.6491}
   m_Children:
   - {fileID: 344297930}
   - {fileID: 886829347}
   - {fileID: 970612323}
   - {fileID: 1075010299}
+  - {fileID: 2071543905}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25992,8 +25993,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   wallCheckRadius: 0.3
+  teleCheckCollider: {fileID: 2071543905}
+  teleLayer:
+    serializedVersion: 2
+    m_Bits: 136
+  teleCheckRadius: 0.2
   isGrounded: 0
   isWall: 0
+  isTele: 0
   spriteRenderer: {fileID: 442774632}
   archerSprite: {fileID: 21300000, guid: 5b6f4e2be3d77864da8f1593cd0de37d, type: 3}
   rogueSprite: {fileID: 21300000, guid: 7d702bd2a0a83f147991b88d0afdb260, type: 3}
@@ -29500,7 +29507,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.42, y: 0.6599999, z: -10}
+  m_LocalPosition: {x: 94.3, y: 0.6599999, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 788926998}
@@ -44066,7 +44073,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822285913}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.42, y: 0.6599999, z: -10}
+  m_LocalPosition: {x: 94.3, y: 0.6599999, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1609854307}
@@ -108602,6 +108609,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2071543904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2071543905}
+  m_Layer: 10
+  m_Name: teleCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2071543905
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071543904}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.77, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 442774633}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2072314429
 GameObject:
   m_ObjectHideFlags: 0
