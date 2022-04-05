@@ -47,6 +47,7 @@ public class Hero : Character
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rb.sharedMaterial.friction = 1f;
+        heroNumber = 1; //set to one whenever play scene is called
     }
 
     void Update()
@@ -92,6 +93,9 @@ public class Hero : Character
                 currentJumpCount = magician.jumpCounter;
             }
         }
+        //wall jump
+        //resets jump counter for archer when attached to a wall
+        if(heroNumber == 1 && !isGrounded && isWall) currentJumpCount = archer.jumpCounter;
         //Jumping
         if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0 && heroNumber != 4){
             //Debug.Log(currentJumpCount);
@@ -110,6 +114,7 @@ public class Hero : Character
                 currentJumpCount --;
             }
         } 
+        //teleport if teleport collider is not colliding in anything
         //tele up
         else if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && currentJumpCount == 0 && heroNumber == 4){
             teleCheckCollider.transform.localPosition = new Vector3(0, magician.jumpHt, 0);
@@ -117,17 +122,17 @@ public class Hero : Character
         //tele left/right
         else if ( (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) &&
         currentJumpCount == 0 && heroNumber == 4){
-            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, 0, 0);
+            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, .1f, 0);
         }
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) &&
         currentJumpCount == 0 && heroNumber == 4){
-            teleCheckCollider.transform.localPosition = new Vector3(-magician.jumpHt, 0, 0);
+            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, .1f, 0);
         }
          else if (heroNumber == 4 && Input.GetKey(KeyCode.Space)){
-            if(!isTele){
+            if(!isTele && isGrounded){
                 if(Input.GetKeyDown(KeyCode.Space)) {
-                    rb.transform.position += teleCheckCollider.transform.localPosition;
-                    Debug.Log("Teleport to empty");
+                    rb.transform.position = teleCheckCollider.position;
+                    Debug.Log(teleCheckCollider.position);
                 }
             }
 
@@ -158,9 +163,9 @@ public class Hero : Character
     void Flip()
     {
         facingRight = !facingRight;
-        Vector2 scaler = transform.localScale;
+        Vector2 scaler = rb.transform.localScale;
         scaler.x *= -1;
-        transform.localScale = scaler;
+        rb.transform.localScale = scaler;
 
     }
     //checks if the player is touching Ground layer
