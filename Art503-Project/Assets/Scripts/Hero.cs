@@ -26,7 +26,7 @@ public class Hero : Character
     public Details archer = new Details(7, 100, 1);
     public Details rogue = new Details(7, 75, 2);
     public Details tank = new Details(5, 80, 1);
-    public Details magician = new Details(7, 2.77f, 0);
+    public Details magician = new Details(7, 3.3f, 0);
 
     public static Rigidbody2D rb;
     private float moveHorizontal;
@@ -95,7 +95,8 @@ public class Hero : Character
         }
         //wall jump
         //resets jump counter for archer when attached to a wall
-        if(heroNumber == 1 && !isGrounded && isWall) currentJumpCount = archer.jumpCounter;
+        if(heroNumber == 1 && !isGrounded && isWall && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))))
+            currentJumpCount = archer.jumpCounter;
         //Jumping
         if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0 && heroNumber != 4){
             //Debug.Log(currentJumpCount);
