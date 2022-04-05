@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : Character
@@ -34,7 +32,7 @@ public class Hero : Character
     //[SerializedField] just means that that variable will appear in the inspector column (normally on the right side)
     //[Range(0, .3f)] is a slider ranging from 0 to .3f
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
-    private int heroNumber = 1;
+    public static int heroNumber = 1;
     private int currentJumpCount;
 
 

@@ -6,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
 {
     private bool attacking = false;
     private float attackTimer = 0f;
-    private float attackCooldown = .01f;
+    private float attackCooldown = .1f;
     public Collider2D attackTrigger;
     
 
@@ -17,13 +17,13 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {
         // Placeholder for attack animations
-        if(Input.GetKeyDown("z") && ! attacking){
+        if(Input.GetKeyDown("z") && !attacking){
             Debug.Log("primary attack");
             attacking = true;
             attackTimer = attackCooldown;
             attackTrigger.enabled = true;
         }
-        if(Input.GetKeyDown("x")){
+        if(Input.GetKeyDown("x") && !attacking){
             Debug.Log("ultimate attack");
             attacking = true;
             attackTimer = attackCooldown;
