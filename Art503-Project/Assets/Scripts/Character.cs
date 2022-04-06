@@ -6,7 +6,7 @@ public class Character : MonoBehaviour
 {
     public class Details {
         public int moveSp;
-        public int jumpHt;
+        public float jumpHt;
         public int jumpCounter;
         public SpriteRenderer playerSprite;
 
@@ -14,7 +14,7 @@ public class Character : MonoBehaviour
 
         // test for first playable
         // only for movement and jumps
-        public Details(int ms, int jh, int jc){
+        public Details(int ms, float jh, int jc){
             moveSp = ms;
             jumpHt = jh;
             jumpCounter = jc;

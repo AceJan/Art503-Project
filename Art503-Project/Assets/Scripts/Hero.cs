@@ -8,8 +8,12 @@ public class Hero : Character
     [SerializeField] Transform wallCheckCollider;
     [SerializeField] LayerMask wallLayer;
     [SerializeField] float wallCheckRadius = .2f;
+    [SerializeField] Transform teleCheckCollider;
+    [SerializeField] LayerMask teleLayer;
+    [SerializeField] float teleCheckRadius = .2f;
     [SerializeField] bool isGrounded = false;
     [SerializeField] bool isWall = false;
+    [SerializeField] bool isTele = false;
     public SpriteRenderer spriteRenderer; //pick which object you want to change
 
     //player sprites
@@ -18,11 +22,11 @@ public class Hero : Character
     public Sprite tankSprite;
     public Sprite magicianSprite;
 
-    // changes character speed/jump
+    // changes character speed, jump, jumpCount
     public Details archer = new Details(7, 100, 1);
-    public Details rogue = new Details(7, 80, 2);
+    public Details rogue = new Details(7, 75, 2);
     public Details tank = new Details(5, 80, 1);
-    public Details magician = new Details(7, 80, 1);
+    public Details magician = new Details(7, 3.3f, 0);
 
     public static Rigidbody2D rb;
     private float moveHorizontal;
@@ -43,6 +47,7 @@ public class Hero : Character
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rb.sharedMaterial.friction = 1f;
+        heroNumber = 1; //set to one whenever play scene is called
     }
 
     void Update()
@@ -88,8 +93,12 @@ public class Hero : Character
                 currentJumpCount = magician.jumpCounter;
             }
         }
-        //pressing up arrow key
-        if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0){
+        //wall jump
+        //resets jump counter for archer when attached to a wall
+        if(heroNumber == 1 && !isGrounded && isWall && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))))
+            currentJumpCount = archer.jumpCounter;
+        //Jumping
+        if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0 && heroNumber != 4){
             //Debug.Log(currentJumpCount);
             if(heroNumber == 1){
                 rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
@@ -104,10 +113,30 @@ public class Hero : Character
             } else if(heroNumber == 3){
                 rb.AddForce(new Vector2(0f, tank.jumpHt), ForceMode2D.Impulse);
                 currentJumpCount --;
-            } else if(heroNumber == 4){
-                rb.AddForce(new Vector2(0f, magician.jumpHt), ForceMode2D.Impulse);
-                currentJumpCount --;
-            }   
+            }
+        } 
+        //teleport if teleport collider is not colliding in anything
+        //tele up
+        else if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && currentJumpCount == 0 && heroNumber == 4){
+            teleCheckCollider.transform.localPosition = new Vector3(0, magician.jumpHt, 0);
+        }  
+        //tele left/right
+        else if ( (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) &&
+        currentJumpCount == 0 && heroNumber == 4){
+            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, .1f, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) &&
+        currentJumpCount == 0 && heroNumber == 4){
+            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, .1f, 0);
+        }
+         else if (heroNumber == 4 && Input.GetKey(KeyCode.Space)){
+            if(!isTele && isGrounded){
+                if(Input.GetKeyDown(KeyCode.Space)) {
+                    rb.transform.position = teleCheckCollider.position;
+                    Debug.Log(teleCheckCollider.position);
+                }
+            }
+
         }
     }
 
@@ -129,14 +158,16 @@ public class Hero : Character
         }
         CheckGroundLayer();
         CheckWallLayer();
+        CheckTeleport();
     }
 
     void Flip()
     {
         facingRight = !facingRight;
-        Vector2 scaler = transform.localScale;
+        Vector2 scaler = rb.transform.localScale;
         scaler.x *= -1;
-        transform.localScale = scaler;
+        rb.transform.localScale = scaler;
+
     }
     //checks if the player is touching Ground layer
     void CheckGroundLayer()
@@ -149,4 +180,7 @@ public class Hero : Character
         isWall = Physics2D.OverlapCircle(wallCheckCollider.position, wallCheckRadius, wallLayer);
     }
 
+    void CheckTeleport(){
+        isTele = Physics2D.OverlapCircle(teleCheckCollider.position, teleCheckRadius, teleLayer);
+    }
 }
