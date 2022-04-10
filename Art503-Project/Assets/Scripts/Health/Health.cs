@@ -41,11 +41,17 @@ public class Health : MonoBehaviour
             HealPlayer(1);
         CheckEnemyLayer();
 
-        if(isEnemy){
-            if(timeLeft == 1) TakeDamage(1);
+        if(Hero.heroNumber == 3 && Input.GetKeyDown("z")){
+            timeLeft = 2;
+            if(timeLeft == 2) TakeDamage(0);
             timeLeft -= Time.deltaTime;
             if(timeLeft < 0) timeLeft = 1;
-            
+        } else {
+            if(isEnemy){
+                if(timeLeft == 1) TakeDamage(1);
+                timeLeft -= Time.deltaTime;
+                if(timeLeft < 0) timeLeft = 1;
+            }
         }
         if(!isEnemy){
             timeLeft = 1;

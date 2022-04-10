@@ -32,7 +32,6 @@ public class Hero : Character
     public Details tank = new Details(3, 80, 1);
     public Details magician = new Details(7, 3.3f, 0);
 
-    public Collider2D bc;
     public static Rigidbody2D rb;
     private float moveHorizontal;
     private Vector3 m_Velocity = Vector3.zero;
@@ -42,7 +41,7 @@ public class Hero : Character
     //[Range(0, .3f)] is a slider ranging from 0 to .3f
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
     public static int heroNumber = 1;
-    public static bool tankAtt;
+    public static bool tankAtt = false;
     private int currentJumpCount;
 
     //-------ANIMATIONS----------
