@@ -5,10 +5,9 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     private bool attacking = false;
-    private float attackTimer = 0f;
+    private float attackTimer = 1f;
     private float attackCooldown = .1f;
     public Collider2D attackTrigger;
-    
 
     void Start()
     {
@@ -17,14 +16,14 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {
         // Placeholder for attack animations
-        if(Input.GetKeyDown("z") && !attacking){
-            Debug.Log("primary attack");
+        if(Input.GetKeyDown("z") && !attacking && Hero.heroNumber == 2){
+            Debug.Log("rogue attack");
             attacking = true;
             attackTimer = attackCooldown;
             attackTrigger.enabled = true;
         }
-        if(Input.GetKeyDown("x") && !attacking){
-            Debug.Log("ultimate attack");
+        if((Hero.heroNumber == 3) && !attacking && Hero.tankAtt){
+            Debug.Log("tank attack");
             attacking = true;
             attackTimer = attackCooldown;
             attackTrigger.enabled = true;
@@ -37,7 +36,6 @@ public class PlayerAttack : MonoBehaviour
                 attacking = false;
                 attackTrigger.enabled = false;
             }
-            
         }
     }
 }

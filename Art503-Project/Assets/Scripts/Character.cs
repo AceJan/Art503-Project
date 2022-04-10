@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     public class Details {
-        public int moveSp;
+        public float moveSp;
         public float jumpHt;
         public int jumpCounter;
         public SpriteRenderer playerSprite;
@@ -14,7 +14,7 @@ public class Character : MonoBehaviour
 
         // test for first playable
         // only for movement and jumps
-        public Details(int ms, float jh, int jc){
+        public Details(float ms, float jh, int jc){
             moveSp = ms;
             jumpHt = jh;
             jumpCounter = jc;
@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
 
         // this will load player sprite and their own attack animation
         // not implemented yet
-        public Details(int ms, int jh, int jc, Animation attackP){
+        public Details(float ms, float jh, int jc, Animation attackP){
             moveSp = ms;
             jumpHt = jh;
             jumpCounter = jc;

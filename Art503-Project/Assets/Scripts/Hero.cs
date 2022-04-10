@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Hero : Character
 {
+    [SerializeField] Transform attackCheckCollider;
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] float attackCheckRadius = 0.2f;
     [SerializeField] Transform groundCheckCollider;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckRadius = 0.2f;
@@ -14,6 +17,7 @@ public class Hero : Character
     [SerializeField] bool isGrounded = false;
     [SerializeField] bool isWall = false;
     [SerializeField] bool isTele = false;
+    [SerializeField] bool isAttack = false;
     public SpriteRenderer spriteRenderer; //pick which object you want to change
 
     //player sprites
@@ -25,9 +29,10 @@ public class Hero : Character
     // changes character speed, jump, jumpCount
     public Details archer = new Details(7, 100, 1);
     public Details rogue = new Details(7, 75, 2);
-    public Details tank = new Details(5, 80, 1);
+    public Details tank = new Details(3, 80, 1);
     public Details magician = new Details(7, 3.3f, 0);
 
+    public Collider2D bc;
     public static Rigidbody2D rb;
     private float moveHorizontal;
     private Vector3 m_Velocity = Vector3.zero;
@@ -37,22 +42,23 @@ public class Hero : Character
     //[Range(0, .3f)] is a slider ranging from 0 to .3f
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
     public static int heroNumber = 1;
+    public static bool tankAtt;
     private int currentJumpCount;
 
     //-------ANIMATIONS----------
-    public bool jumped = false;
+    // public bool jumped = false;
 
-    public bool toMage = true;
-    public bool toTank = true;
-    public bool toRogue = true;
+    // public bool toMage = true;
+    // public bool toTank = true;
+    // public bool toRogue = true;
 
 
-    // Animation - Ranger
-    public Animator rangerAnimator;
-    private string currentState;
-    const string RANGER_IDLE = "Ranger_Idle";
-    const string RANGER_JUMP = "Ranger_Jump";
-    const string RANGER_ATTACK = "Ranger_Attack";
+    // // Animation - Ranger
+    // public Animator rangerAnimator;
+    // private string currentState;
+    // const string RANGER_IDLE = "Ranger_Idle";
+    // const string RANGER_JUMP = "Ranger_Jump";
+    // const string RANGER_ATTACK = "Ranger_Attack";
 
 
     // Animation - Mage
@@ -72,7 +78,8 @@ public class Hero : Character
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rb.sharedMaterial.friction = 1f;
         heroNumber = 1; //set to one whenever play scene is called
-        rangerAnimator = GetComponent<Animator>();
+        //rangerAnimator = GetComponent<Animator>();
+        
     }
 
     void Update()
@@ -90,9 +97,9 @@ public class Hero : Character
             heroNumber = 1;
             spriteRenderer.sprite = archerSprite;
             rb.sharedMaterial.friction = 1f;
-            toMage = false;
-            ChangeAnimationState(RANGER_IDLE);
-            rangerAnimator.enabled = true;
+            //toMage = false;
+            //ChangeAnimationState(RANGER_IDLE);
+            //rangerAnimator.enabled = true;
         } else if (Input.GetKeyDown("2") || Input.GetKeyUp("2")){
             heroNumber = 2;
             spriteRenderer.sprite = rogueSprite;
@@ -106,9 +113,9 @@ public class Hero : Character
             heroNumber = 4;
             spriteRenderer.sprite = magicianSprite;
             rb.sharedMaterial.friction = 0f;
-            ChangeAnimationState(MAGE_IDLE);
-            rangerAnimator.enabled = true;
-            toMage = true;
+            //ChangeAnimationState(MAGE_IDLE);
+            //rangerAnimator.enabled = true;
+            //toMage = true;
         }
 
 
@@ -131,10 +138,9 @@ public class Hero : Character
             currentJumpCount = archer.jumpCounter;
         //Jumping
         if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && currentJumpCount > 0 && heroNumber != 4){
-            //Debug.Log(currentJumpCount);
             if(heroNumber == 1){
-                ChangeAnimationState(RANGER_JUMP);
-                jumped = true;
+                //ChangeAnimationState(RANGER_JUMP);
+                //jumped = true;
                 rb.AddForce(new Vector2(0f, archer.jumpHt), ForceMode2D.Impulse);
                 currentJumpCount --;
             } else if(heroNumber == 2){
@@ -157,20 +163,18 @@ public class Hero : Character
         //tele left/right
         else if ( (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) &&
         currentJumpCount == 0 && heroNumber == 4){
-            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, .1f, 0);
+            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, 0, 0);
         }
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) &&
         currentJumpCount == 0 && heroNumber == 4){
-            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, .1f, 0);
+            teleCheckCollider.transform.localPosition = new Vector3(magician.jumpHt, 0, 0);
         }
          else if (heroNumber == 4 && Input.GetKey(KeyCode.Space)){
             if(!isTele && isGrounded){
                 if(Input.GetKeyDown(KeyCode.Space)) {
                     rb.transform.position = teleCheckCollider.position;
-                    Debug.Log(teleCheckCollider.position);
                 }
             }
-
         }
     }
 
@@ -178,18 +182,34 @@ public class Hero : Character
     {
         //movement for the heroes
         if(heroNumber == 1){
+            tank.moveSp = 4f;
             Vector3 targetVelocity = new Vector2(moveHorizontal * archer.moveSp, rb.velocity.y);
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
         } else if (heroNumber == 2){
+            tank.moveSp = 4f;
             Vector3 targetVelocity = new Vector2(moveHorizontal * rogue.moveSp, rb.velocity.y);
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
         } else if (heroNumber == 3){
+            //tank accelerates and resets when tank stops moving
+            tank.moveSp *= 1.01f;
+            if(tank.moveSp >= 10){
+                tank.moveSp = 10f;
+                //gameObject.transform.Find("attackTrigger").GetComponent<Collider2D>().isTrigger = false;
+                tankAtt = true;
+            }
+            if(rb.velocity.x == 0) {
+                //gameObject.transform.Find("attackTrigger").GetComponent<Collider2D>().isTrigger = true;
+                tank.moveSp = 4f;
+                tankAtt = false;
+            }
             Vector3 targetVelocity = new Vector2(moveHorizontal * tank.moveSp, rb.velocity.y);
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
         } else if (heroNumber == 4){
+            tank.moveSp = 4f;
             Vector3 targetVelocity = new Vector2(moveHorizontal * magician.moveSp, rb.velocity.y);
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
         }
+        CheckAttackTrigger();
         CheckGroundLayer();
         CheckWallLayer();
         CheckTeleport();
@@ -206,6 +226,10 @@ public class Hero : Character
 
     }
     //checks if the player is touching Ground layer
+    void CheckAttackTrigger(){
+        isAttack = Physics2D.OverlapCircle(attackCheckCollider.position, attackCheckRadius, enemyLayer);
+    }
+
     void CheckGroundLayer()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheckCollider.position, groundCheckRadius, groundLayer);
@@ -224,13 +248,16 @@ public class Hero : Character
         return heroNumber;
     }
 
+    public bool getAttack(){
+        return isAttack;
+    }
     void ChangeAnimationState(string newState) {
         
         // Stop the same animation from interrupting itself
-        if (currentState == newState) return;
+        //if (currentState == newState) return;
 
         // Play animation
-        rangerAnimator.Play(newState);
+        //rangerAnimator.Play(newState);
         /*if(getHeroNumber() == 1 ) {
             
         }
@@ -240,7 +267,7 @@ public class Hero : Character
         
 
         // Reassign the current state
-        currentState = newState;
+        //currentState = newState;
 
     }
 }

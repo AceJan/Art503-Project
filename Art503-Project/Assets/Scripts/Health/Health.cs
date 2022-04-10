@@ -15,7 +15,6 @@ public class Health : MonoBehaviour
     private void Start()
     {
         currentHealth = startingHealth;
-        //Debug.Log(currentHealth);
     }
     public void TakeDamage(float dmg)
     {
@@ -45,7 +44,6 @@ public class Health : MonoBehaviour
         if(isEnemy){
             if(timeLeft == 1) TakeDamage(1);
             timeLeft -= Time.deltaTime;
-            //Debug.Log(timeLeft);
             if(timeLeft < 0) timeLeft = 1;
             
         }

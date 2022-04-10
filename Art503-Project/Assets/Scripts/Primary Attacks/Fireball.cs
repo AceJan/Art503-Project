@@ -8,7 +8,7 @@ public class Fireball : MonoBehaviour
     public int damage = 60; 
     public Rigidbody2D rb;
 
-
+    string brick = "AssetBrickPlatform";
     // Start is called before the first frame update
     void Start()
     {
@@ -18,19 +18,17 @@ public class Fireball : MonoBehaviour
     }
 
     void OnTriggerEnter2D (Collider2D hitInfo) {
-        Debug.Log("Hit info: " + hitInfo);
         BasicEnemyController enemy = hitInfo.GetComponent<BasicEnemyController>();
-        Debug.Log("Enemy: " + enemy);
         if(enemy != null) {
             
             enemy.Damage(damage);
         }
         
-        /*if(hitInfo.name == "Alive"){
+        //arrow will be destroyed when hitting enemy or wall
+        if(hitInfo.name.Contains(brick) || hitInfo.name.Contains("Enemy2")){
             //animation
             Destroy(gameObject);
         }
-        */
     }
 
 }

@@ -149,8 +149,6 @@ public class BasicEnemyController : MonoBehaviour
         }
         */
         // Hit Particle
-        Debug.Log("ch: " + currentHealth);
-        Debug.Log("dmg: " + attackDetails);
         if(currentHealth > 0.0f)
         {
             SwitchState(State.Knockback);

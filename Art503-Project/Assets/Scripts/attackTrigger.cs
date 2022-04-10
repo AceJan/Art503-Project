@@ -12,8 +12,6 @@ public class attackTrigger : MonoBehaviour
     public Transform fireBallPoint; // Position of the fireball
     public GameObject fireBallPrefab;
 
-    
-
     void Update () {
         if(Input.GetButtonDown("Fire1")){
             
@@ -29,9 +27,6 @@ public class attackTrigger : MonoBehaviour
             else if(GameObject.Find("Player").GetComponent<Hero>().getHeroNumber() == 4) {
                 FireBall();
             }
-            
-            
-            
         }
     }
 
