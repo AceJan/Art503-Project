@@ -18,10 +18,10 @@ public class Fireball : MonoBehaviour
     }
 
     void OnTriggerEnter2D (Collider2D hitInfo) {
-        BasicEnemyController enemy = hitInfo.GetComponent<BasicEnemyController>();
+        Enemy2 enemy = hitInfo.GetComponent<Enemy2>();
         if(enemy != null) {
             
-            enemy.Damage(damage);
+            enemy.TakeDamage(damage);
         }
         
         //arrow will be destroyed when hitting enemy or wall
