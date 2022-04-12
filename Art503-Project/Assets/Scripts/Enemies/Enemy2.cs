@@ -21,7 +21,7 @@ public class Enemy2 : MonoBehaviour
    void Die() {
        //Instantiate(deathEffect, transform.position, Quaternion.identity);
        ReaperDied = true;
-       Destroy(transform.parent.gameObject);
+       Destroy(gameObject);
        
    }
 }

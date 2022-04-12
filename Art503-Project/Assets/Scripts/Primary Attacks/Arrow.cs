@@ -26,9 +26,16 @@ public class Arrow : MonoBehaviour
             enemy.TakeDamage(damage);
         }
         
+        //Test
         if(hitInfo.name == "Square (2)"){
             //animation
             Destroy(gameObject);
+        }
+
+        //Everything in Enemy Layer
+        if(hitInfo.tag == "Enemy"){
+            //hitInfo.GetComponent<Animator>().SetTrigger("hurt");
+            hitInfo.GetComponent<Death>().TakeDamage(damage);
         }
     }
 

@@ -25,6 +25,11 @@ public class Fireball : MonoBehaviour
             
             enemy.Damage(damage);
         }
+
+
+        //Everything in Enemy Layer
+        if(hitInfo.tag == "Enemy")
+            hitInfo.GetComponent<Death>().TakeDamage(damage);
         
         /*if(hitInfo.name == "Alive"){
             //animation

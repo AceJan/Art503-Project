@@ -67,11 +67,11 @@ public class ReaperAI : MonoBehaviour
             currentWaypoint++;
         }
 
-        if(force.x >= 0.01f) {
+        if(force.x <= 0.01f) {
             reaperGFX.localScale = new Vector3(1f, 1f, 1f);
 
         } 
-        else if(force.x <= -0.01f) {
+        else if(force.x >= -0.01f) {
             reaperGFX.localScale = new Vector3(-1f, 1f, 1f);
         }
         
