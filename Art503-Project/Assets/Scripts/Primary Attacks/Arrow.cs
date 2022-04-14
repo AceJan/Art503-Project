@@ -9,6 +9,7 @@ public class Arrow : MonoBehaviour
     public int damage = 40; 
     public Rigidbody2D rb;
 
+    string brick = "AssetBrickPlatform";
 
     // Start is called before the first frame update
     void Start()
@@ -26,17 +27,25 @@ public class Arrow : MonoBehaviour
             enemy.TakeDamage(damage);
         }
         
-        //Test
-        if(hitInfo.name == "Square (2)"){
-            //animation
-            Destroy(gameObject);
+        BossScript enemyBoss = hitInfo.GetComponent<BossScript>();
+        if(enemyBoss != null){
+            enemyBoss.TakeDamage(20);
         }
 
+
+
         //Everything in Enemy Layer
-        if(hitInfo.tag == "Enemy"){
+        if( hitInfo.tag == "Enemy"){
             //hitInfo.GetComponent<Animator>().SetTrigger("hurt");
             hitInfo.GetComponent<Death>().TakeDamage(damage);
         }
+
+        //arrow will be destroyed when hitting enemy or wall
+        if(hitInfo.name.Contains(brick) || hitInfo.name.Contains("Enemy2")){
+            //animation
+            Destroy(gameObject);
+        }
+        
     }
 
     // Update is called once per frame
