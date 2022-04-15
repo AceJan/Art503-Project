@@ -18,7 +18,7 @@ public class Hero : Character
     [SerializeField] bool isWall = false;
     [SerializeField] bool isTele = false;
     [SerializeField] bool isAttack = false;
-    public SpriteRenderer spriteRenderer; //pick which object you want to change
+    public static SpriteRenderer spriteRenderer; //pick which object you want to change
 
     //player sprites
     public Sprite archerSprite;

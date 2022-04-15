@@ -23,7 +23,12 @@ public class Fireball : MonoBehaviour
             
             enemy.TakeDamage(damage);
         }
-        
+
+        BossScript enemyBoss = hitInfo.GetComponent<BossScript>();
+        if(enemyBoss != null){
+            enemyBoss.TakeDamage(20);
+        }
+
         //arrow will be destroyed when hitting enemy or wall
         if(hitInfo.name.Contains(brick) || hitInfo.name.Contains("Enemy2")){
             //animation

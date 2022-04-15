@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Enemy
   - Wall
+  - Potion
+  - Heal
   layers:
   - Default
   - TransparentFX
@@ -20,7 +22,7 @@ TagManager:
   - Tutorial
   - TelePosition
   - Obstacle
-  - 
+  - Potion
   - 
   - 
   - 

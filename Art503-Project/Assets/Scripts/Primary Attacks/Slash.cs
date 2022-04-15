@@ -9,5 +9,10 @@ public class Slash : MonoBehaviour
         if(enemy != null ) {
             enemy.TakeDamage(20);
         }
+
+        BossScript enemyBoss = collider.GetComponent<BossScript>();
+        if(enemyBoss != null){
+            enemyBoss.TakeDamage(20);
+        }
     }
 }
