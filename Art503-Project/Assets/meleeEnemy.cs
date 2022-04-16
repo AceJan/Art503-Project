@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class meleeEnemy : MonoBehaviour
@@ -61,7 +59,7 @@ public class meleeEnemy : MonoBehaviour
     }
 
     private void DamagePlayer() {
-        if(PlayerInSight()) {
+        if(PlayerInSight() && !Health.tankDefense) {
             GameObject.Find("Player").GetComponent<Health>().TakeDamage(damage);
         }
     }

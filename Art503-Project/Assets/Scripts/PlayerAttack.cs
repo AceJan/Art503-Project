@@ -21,6 +21,7 @@ public class PlayerAttack : MonoBehaviour
         if(Input.GetKeyDown("z") && !attacking && Hero.heroNumber == 2){
             //Debug.Log("rogue attack");
             //change sprite to attack
+            Hero.rangerAnimator.enabled = false;
             Hero.spriteRenderer.sprite = rogueAttackSprite;
             attacking = true;
             attackTimer = attackCooldown;
@@ -37,6 +38,7 @@ public class PlayerAttack : MonoBehaviour
             if(attackTimer > 0){
                 attackTimer -= Time.deltaTime;
             } else {
+                Hero.rangerAnimator.enabled = true;
                 Hero.spriteRenderer.sprite = rogueIdleSprite;
                 attacking = false;
                 attackTrigger.enabled = false;

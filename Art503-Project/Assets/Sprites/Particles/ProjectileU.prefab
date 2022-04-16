@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2660528065492978580}
   - component: {fileID: 8992820751521350688}
   - component: {fileID: 1429967217734753375}
-  - component: {fileID: -9121454180946904270}
+  - component: {fileID: -1189658144916119397}
   m_Layer: 0
-  m_Name: Fireball
+  m_Name: ProjectileU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7067805424659795891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.9363, y: 1.8743, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.093939304, y: 0.093939304, z: 0.0666}
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3729af616a4c1402a8903e5df60cfc28, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,8 +99,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: -1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -122,7 +122,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &-9121454180946904270
+--- !u!114 &-1189658144916119397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,9 +131,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7067805424659795891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90e9b7a447bd34bda951d1dc91a30f22, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c86264abb6444c41a50511fff1c0ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
-  damage: 60
+  rate: 15
   rb: {fileID: 8992820751521350688}

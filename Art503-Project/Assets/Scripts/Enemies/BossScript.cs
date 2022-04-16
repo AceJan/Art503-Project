@@ -3,15 +3,22 @@ using UnityEngine;
 
 public class BossScript : MonoBehaviour
 {
-    private int bossHealth = 800;
+    public Transform projectilePoint; 
+    public GameObject projectilePrefabL;
+    public GameObject projectilePrefabR;
+    public GameObject projectilePrefabU;
+    public static int bossHealth = 800;
     Rigidbody2D bossRB;
     Vector2[] bossPositions = new Vector2[9]; //positions after taking damage
     Vector2[] bossFatiguePos = new Vector2[2];//positions after taking huge damage
+
+    private float timer = 1;
 
     int tempHealth;
     // Start is called before the first frame update
     void Start()
     {
+        bossHealth = 800;
         bossRB = GetComponent<Rigidbody2D>();
         bossPositions[0] = new Vector2(74.56f, 44.71f);
         bossPositions[1] = new Vector2(70.56f, 46.63f);
@@ -32,6 +39,18 @@ public class BossScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(timer == 1){
+            if(bossHealth >= 550) {
+                Instantiate(projectilePrefabL, projectilePoint.position, projectilePoint.rotation);
+                Instantiate(projectilePrefabR, projectilePoint.position, projectilePoint.rotation);
+            }
+            if(bossHealth >= 150 && bossHealth <= 399) {
+                Instantiate(projectilePrefabL, projectilePoint.position, projectilePoint.rotation);
+                Instantiate(projectilePrefabR, projectilePoint.position, projectilePoint.rotation);
+                Instantiate(projectilePrefabU, projectilePoint.position, projectilePoint.rotation);
+            }
+            
+        }
         //for every 50 damage done, go to next place
         if(bossHealth <= 750 && bossHealth >= 700){
             bossRB.transform.position = bossPositions[0];
@@ -57,6 +76,10 @@ public class BossScript : MonoBehaviour
             bossRB.transform.position = bossFatiguePos[1];
         } else if (bossHealth <= 0) {
             SceneManager.LoadScene(3);
+        }
+        timer -= Time.deltaTime;
+        if(timer <= 0){
+            timer = 1;
         }
     }
 

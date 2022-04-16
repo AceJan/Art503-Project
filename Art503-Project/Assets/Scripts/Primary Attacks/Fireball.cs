@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Fireball : MonoBehaviour
 {
+
     public float speed = 15f;
-    public int damage = 60; 
+    public int damage = 25; 
     public Rigidbody2D rb;
 
     string brick = "AssetBrickPlatform";
@@ -20,7 +19,6 @@ public class Fireball : MonoBehaviour
     void OnTriggerEnter2D (Collider2D hitInfo) {
         Enemy2 enemy = hitInfo.GetComponent<Enemy2>();
         if(enemy != null) {
-            
             enemy.TakeDamage(damage);
         }
 
@@ -33,10 +31,11 @@ public class Fireball : MonoBehaviour
         if(hitInfo.tag == "Enemy"){
             //hitInfo.GetComponent<Animator>().SetTrigger("hurt");
             hitInfo.GetComponent<Death>().TakeDamage(damage);
+            Destroy(gameObject);
         }
-
+        
         //arrow will be destroyed when hitting enemy or wall
-        if(hitInfo.name.Contains(brick) || hitInfo.name.Contains("Enemy2")){
+        if(hitInfo.name.Contains(brick) || hitInfo.name.Contains("Untagged")){
             //animation
             Destroy(gameObject);
         }

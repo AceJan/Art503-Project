@@ -5,13 +5,19 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private float startingHealth;
     [SerializeField] bool isEnemy = false;
+    [SerializeField] bool isPotion = false;
+    [SerializeField] Transform potionCheckCollider;
+    [SerializeField] LayerMask potionLayer;
+    [SerializeField] float potionCheckRadius = .5f;
     [SerializeField] Transform enemyCheckCollider;
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float enemyCheckRadius = .5f;
     public float currentHealth {get; private set;}
     float timeLeft = 1;
 
+    public static bool tankDefense = false;
 
+    public Sprite tankDefendSprite;
     private void Start()
     {
         currentHealth = startingHealth;
@@ -40,22 +46,24 @@ public class Health : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.E))
             HealPlayer(1);
         CheckEnemyLayer();
+        CheckHealthPotion();
+        if(isPotion) HealPlayer(1);
 
-        if(Hero.heroNumber == 3 && Input.GetKeyDown("z")){
-            timeLeft = 2;
-            if(timeLeft == 2) TakeDamage(0);
-            timeLeft -= Time.deltaTime;
-            if(timeLeft < 0) timeLeft = 1;
-        } else {
-            if(isEnemy){
-                if(timeLeft == 1) TakeDamage(1);
-                timeLeft -= Time.deltaTime;
-                if(timeLeft < 0) timeLeft = 1;
-            }
+        if(timeLeft <= 0) {
+            Hero.spriteRenderer.color = Color.white;
+            tankDefense = false;
         }
-        if(!isEnemy){
+        if(Hero.heroNumber == 3 && Input.GetButtonDown("Fire1")){
+            tankDefense = true;
+            Hero.spriteRenderer.sprite = tankDefendSprite;
+            Hero.spriteRenderer.color = Color.yellow;
             timeLeft = 1;
+            timeLeft -= Time.deltaTime;
         }
+        if(tankDefense){
+            timeLeft -= Time.deltaTime;
+        }
+        //if player falls through map
         if(Hero.rb.transform.position.y <= -10){
             SceneManager.LoadScene(2);
         }
@@ -65,6 +73,11 @@ public class Health : MonoBehaviour
     void CheckEnemyLayer()
     {
         isEnemy = Physics2D.OverlapCircle(enemyCheckCollider.position, enemyCheckRadius, enemyLayer);
+    }
+
+    void CheckHealthPotion()
+    {
+        isPotion = Physics2D.OverlapCircle(potionCheckCollider.position, potionCheckRadius, potionLayer);
     }
 
 }
