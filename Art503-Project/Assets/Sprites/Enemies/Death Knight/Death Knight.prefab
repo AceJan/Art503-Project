@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
-  health: 100
+  health: 200
 --- !u!212 &8023084465619198925
 SpriteRenderer:
   m_ObjectHideFlags: 0
