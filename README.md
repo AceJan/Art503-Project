@@ -27,34 +27,38 @@ Wizard (Character 4)
 
 Characters: Press 1, 2, 3, or 4 to change characters.
 
-Character 1 : Archer
-    - Fast movement 
-    - Can wall jump
-    - Straight ranged attack
+- Character 1: Archer
+    Fast movement 
+    Can wall jump
+    Straight ranged attack
     
-Character 2 : Rogue
-    - Fast movement
-    - Can double jump
-    - Close-ranged attacks
+- Character 2: Rogue
+    Fast movement
+    Can double jump
+    Close-ranged attacks
 
-Character 3 : Tank 
-    - Speed will increase overtime whenever the player moves. (Speed will reset after stopping) 
-    - Close range attack but only in full speed.
+- Character 3: Tank 
+    Speed will increase overtime whenever the player moves. (Speed will reset after stopping) 
+    Close range attack but only in full speed.
     
-Character 4 : Mage 
-    - Medium speed
-    - Can teleport wherever direction player points to but can't jump.
-    - Rangeed attack with an arc
+- Character 4: Mage 
+    Medium speed
+    Can teleport wherever direction player points to but can't jump.
+    Rangeed attack with an arc
 
 
 Enemies:
-Enemy: Skeleton (100 HP) - The weakest enemy. Used for introducing the player to enemies. 
+- Enemy: Skeleton (100 HP): 
+    The weakest enemy. Used for introducing the player to enemies. 
 
-Enemy: Dread Knight (150 HP) - Tougher enemy. Used for introducing the player to experiment with each hero available.
+- Enemy: Dread Knight (150 HP):
+    Tougher enemy. Used for introducing the player to experiment with each hero available.
 
-Enemy: Death Knight (200 HP) - Largest enemy with the biggest health. Used for introducing ranged attack to player.
+- Enemy: Death Knight (200 HP):
+    Largest enemy with the biggest health. Used for introducing ranged attack to player.
 
-Enemy: Boss (800HP) - The final boss for the game. The boss will teleport to different locations whenever the player whittles down the boss's health. This mob has ranged attack and the player will get hurt if they get too close. Defeating this mob will bring the player to the win screen.
+- Enemy: Boss (800HP):
+    The final boss for the game. The boss will teleport to different locations whenever the player whittles down the boss's health. This mob has ranged attack and the player will get hurt if they get too close. Defeating this mob will bring the player to the win screen.
 
 
 Levels:
