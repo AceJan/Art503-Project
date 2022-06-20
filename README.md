@@ -1,6 +1,6 @@
-# Art503-Project
+# Stone Keep
 
-Title: StoneKeep
+Art503-Project
 
 Using Unity as the game engine.
 
